@@ -1,0 +1,28 @@
+# Moodle installation
+moodle/
+
+# Moodle data
+moodledata/
+
+# Logs
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Docker
+docker-compose.override.yml

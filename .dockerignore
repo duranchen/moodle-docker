@@ -1,0 +1,8 @@
+.env
+.env.local
+logs/
+moodledata/
+moodle/
+*.log
+.DS_Store
+Thumbs.db
