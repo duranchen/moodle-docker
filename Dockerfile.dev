@@ -62,7 +62,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN mkdir -p /var/log/nginx /var/run/nginx /var/cache/nginx && \
     chown -R www-data:www-data /var/www/html
 
-EXPOSE 80 443 9000 9003
+EXPOSE 80 443 9003
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost/health.php || exit 1
