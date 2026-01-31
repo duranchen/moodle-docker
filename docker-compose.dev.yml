@@ -10,7 +10,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "9003:9003"
     volumes:
       - ./moodle:/var/www/html
       - ./moodledata:/var/www/moodledata
