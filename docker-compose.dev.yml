@@ -88,6 +88,24 @@ services:
       timeout: 10s
       retries: 3
 
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    container_name: moodle-dev-cron
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./moodle:/var/www/html
+      - ./moodledata:/var/www/moodledata
+    depends_on:
+      - db
+      - redis
+      - php
+    networks:
+      - moodle-network
+    restart: unless-stopped
+
 volumes:
   db-dev-data:
   redis-dev-data:

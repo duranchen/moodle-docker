@@ -1,0 +1,50 @@
+FROM php:8.3-cli
+
+WORKDIR /var/www/html
+
+# Install necessary dependencies for Moodle
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libxml2-dev libpq-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    libzip-dev libonig-dev libssl-dev zlib1g-dev libicu-dev \
+    libcurl4-openssl-dev \
+    postgresql-client default-mysql-client \
+    cron \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions required by Moodle
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install \
+    gd pdo pdo_mysql pdo_pgsql mysqli intl zip soap mbstring \
+    opcache fileinfo exif curl
+
+# Install Redis extension
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Configure PHP settings for Moodle
+RUN { \
+    echo 'max_input_vars = 5000'; \
+    echo 'post_max_size = 128M'; \
+    echo 'upload_max_filesize = 128M'; \
+    echo 'max_execution_time = 300'; \
+    echo 'memory_limit = 512M'; \
+    } > /usr/local/etc/php/conf.d/moodle.ini
+
+# Configure opcache
+RUN { \
+    echo 'opcache.enable=1'; \
+    echo 'opcache.enable_cli=1'; \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.interned_strings_buffer=8'; \
+    echo 'opcache.max_accelerated_files=4000'; \
+    } > /usr/local/etc/php/conf.d/opcache.ini
+
+# Create crontab entry to run Moodle cron every minute
+RUN echo "* * * * * /usr/local/bin/php /var/www/html/admin/cli/cron.php >> /var/log/moodle-cron.log 2>&1" | crontab -
+
+# Create log directory for cron
+RUN mkdir -p /var/log && touch /var/log/moodle-cron.log
+
+# Run cron daemon in foreground
+CMD ["cron", "-f"]
