@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: moodle-dev-php
     environment:
-      - TZ=UTC
+      - TZ=Asia/Shanghai
       - XDEBUG_CONFIG=idekey=vscode
     ports:
       - "80:80"
@@ -40,7 +40,7 @@ services:
       MYSQL_DATABASE: ${DB_NAME:-moodle}
       MYSQL_USER: ${DB_USER:-moodleuser}
       MYSQL_PASSWORD: ${DB_PASSWORD:-moodlepass}
-      TZ: UTC
+      TZ: Asia/Shanghai
     ports:
       - "3306:3306"
     volumes:
