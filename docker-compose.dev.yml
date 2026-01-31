@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   php:
     build:
@@ -23,6 +21,8 @@ services:
       - db
       - redis
       - solr
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - moodle-network
     restart: unless-stopped
