@@ -1,11 +1,17 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.3-fpm
 
 WORKDIR /var/www/html
 
-RUN apk add --no-cache \
-    curl git wget unzip libxml2-dev postgresql-dev libpng-dev libjpeg-turbo-dev \
-    freetype-dev libzip-dev oniguruma-dev openssl-dev icu-dev \
-    mysql-client nginx ca-certificates supervisor
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    curl git wget unzip libxml2-dev libpq-dev libpng-dev libjpeg-dev \
+    libfreetype6-dev libzip-dev libonig-dev libssl-dev zlib1g-dev libicu-dev \
+    nginx ca-certificates supervisor \
+    default-mysql-client \
+    # Install packages from Moodle system paths: aspell for /usr/bin/aspell, graphviz for /usr/bin/dot, ghostscript for /usr/bin/gs, poppler-utils for /usr/bin/pdftoppm, python3 for /usr/bin/python3
+    aspell graphviz ghostscript poppler-utils python3 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install \

@@ -9,11 +9,13 @@ RUN set -eux; \
     libxml2-dev libpq-dev libpng-dev libjpeg-dev libfreetype6-dev \
     libzip-dev libonig-dev libssl-dev zlib1g-dev libicu-dev \
     libcurl4-openssl-dev \
-    postgresql-client nginx ca-certificates supervisor \
+    nginx ca-certificates supervisor \
     nodejs npm \
     chromium chromium-driver \
     default-jre lsb-release gnupg \
     default-mysql-client \
+    # Install packages from Moodle system paths: aspell for /usr/bin/aspell, graphviz for /usr/bin/dot, ghostscript for /usr/bin/gs, poppler-utils for /usr/bin/pdftoppm, python3 for /usr/bin/python3
+    aspell graphviz ghostscript poppler-utils python3 \
     && rm -rf /var/lib/apt/lists/*
   
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
