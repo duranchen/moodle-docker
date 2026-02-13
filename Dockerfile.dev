@@ -15,13 +15,13 @@ RUN set -eux; \
     default-jre lsb-release gnupg \
     default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
-
+  
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install \
     gd pdo pdo_mysql pdo_pgsql mysqli intl zip soap mbstring \
     opcache fileinfo exif curl
 
-RUN pecl install xdebug redis && docker-php-ext-enable xdebug redis
+RUN pecl install xdebug redis solr && docker-php-ext-enable xdebug redis solr
 
 RUN { \
     echo 'max_input_vars = 5000'; \

@@ -20,7 +20,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     opcache fileinfo exif curl
 
 # Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install redis && docker-php-ext-enable redis solr
 
 # Configure PHP settings for Moodle
 RUN { \
